@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, Button, TouchableOpacity, TextInput, Linking, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import supabase from "../config/supabaseClient.js";
-import { useLocalSearchParams } from "expo-router";
+import { v4 as uuidv4 } from "uuid";
 
 const height = Dimensions.get('window').height;
 
@@ -115,8 +115,10 @@ export default function Registration() {
     const [email, setEmail] = useState("");
     const [password, setPass] = useState("");
     const [confirm, setConfirm] = useState("");
+    const [userID, setUserID] = useState<string | null>(null);
     const [formError, setFormError] = useState(null);
     const [passError, setPassError] = useState(false);
+    const id = uuidv4();
     const showPassError = () => {
         setPassError(true);
     };
@@ -134,10 +136,11 @@ export default function Registration() {
             return
         }
         navigation.navigate("Name")
-        const { data, error } = await supabase
+        const { data, error, } = await supabase
             .from('User')
-            .insert([{ email, password }])
+            .insert([{ id, email, password }])
             .select()
+
         if (error) {
             console.log(error)
         }

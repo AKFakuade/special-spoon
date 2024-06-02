@@ -88,6 +88,7 @@ function Name() {
         if (error) {
             console.log(id)
             console.log(error)
+            console.log(name)
         }
         if (data) {
             console.log(data)
